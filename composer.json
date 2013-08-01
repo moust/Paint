@@ -1,0 +1,20 @@
+{
+    "name": "moust/paint",
+    "type": "library",
+    "description": "Image manipulation library",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Quentin Aupetit",
+            "email": "qaupetit@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": { "Paint\\": "" }
+    },
+    "target-dir": "Paint"
+}
