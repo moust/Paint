@@ -6,14 +6,7 @@ use Paint\Filter\FilterInterface;
 
 class Paint
 {
-	public static $AVAILABLE_FORMATS = array(
-		IMAGETYPE_JPEG,
-		IMAGETYPE_PNG,
-		IMAGETYPE_GIF,
-		IMAGETYPE_WBMP,
-		IMAGETYPE_XBM
-	);
-
+	
 	public $inputPath;
 	public $outputPath;
 
