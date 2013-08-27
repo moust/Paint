@@ -3,7 +3,6 @@
 namespace Paint\Tests;
 
 use Paint\Paint;
-use Paint\Filter\FilterGrayscale;
 
 class PaintTest extends \PHPUnit_Framework_TestCase
 {
@@ -269,21 +268,4 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, file_exists($file));
 	}
 
-	public function testFilter()
-	{
-		$file = 'Tests/filter-grayscale.jpeg';
-
-		if (file_exists($file)) {
-			unlink($file);
-		}
-
-		$paint = Paint::create();
-		$paint->input('Tests/carlos.jpeg');
-		$paint->addFilter( new FilterGrayscale() );
-		$paint->outputFormat(IMG_JPEG);
-		$paint->output($file);
-		$paint->generate();
-
-		$this->assertEquals(true, file_exists($file));
-	}
 }

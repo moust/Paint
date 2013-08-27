@@ -94,6 +94,8 @@ class Paint
 			throw new \InvalidArgumentException('Input file is not a valid ressource.');
 		}
 
+		$this->inputPath = $input;
+
 		list($this->inputWidth, $this->inputHeight, $this->inputType) = getimagesize($input);
 
 		switch ($this->inputType) {
@@ -119,8 +121,6 @@ class Paint
 				throw new \InvalidArgumentException('Unsuported file type.');
 				break;
 		}
-
-		$this->inputPath = $input;
 	}
 
 
@@ -324,13 +324,13 @@ class Paint
 			$width = $outputWidth;
 		}
 
-		# taller
+		// taller
 		if ($height > $outputHeight) {
 			$width = ($outputHeight / $height) * $width;
 			$height = $outputHeight;
 		}
 
-		# wider
+		// wider
 		if ($width > $outputWidth) {
 			$height = ($outputWidth / $width) * $height;
 			$width = $outputWidth;
