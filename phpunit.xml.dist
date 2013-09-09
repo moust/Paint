@@ -8,21 +8,19 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
+         verbose="false"
          bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="Image manipulation library Test Suite">
+        <testsuite name="Image manipulation library Tests Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
+        <blacklist>
+            <directory>vendor</directory>
+            <directory>Tests</directory>
+        </blacklist>
     </filter>
 </phpunit>

@@ -2,6 +2,8 @@
 
 namespace Paint;
 
+use Paint\Utils;
+use Paint\Format\FormatInterface;
 use Paint\Filter\FilterInterface;
 
 class Paint
@@ -19,28 +21,14 @@ class Paint
 	protected $inputHeight;
 	protected $inputType;
 
-	protected $outputFormat = IMAGETYPE_JPEG;
-
 	protected $outputWidth = 0;
 	protected $outputHeight = 0;
 
-	protected $outputQuality = 100;
-
-	protected $foreground = array(0, 0, 0);
-
 	protected $colorFill;
-
-	protected $pngFilters;
 
 	protected $resizeMode;
 
 	protected $filters = array();
-
-
-	public function __construct()
-	{
-
-	}
 
 
 	public function __destruct()
@@ -51,33 +39,6 @@ class Paint
 		if ($this->input) {
 			imagedestroy($this->input);
 		}
-	}
-
-
-	/**
-	 * check if $format is a valid image format
-	 *
-	 * @param string octet du format d'image. Formats supportés : IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP | IMG_XPM
-	 **/
-	public static function isSupportedFormats($format)
-	{
-		return true == (imagetypes() & $format);
-	}
-
-
-	/**
-	 * validate an RGB color
-	 *
-	 * @param int $color
-	 **/
-	public static function validColor($color)
-	{
-		// convert hexa to decimal
-		if (is_string($color)) {
-			$color = hexdec($color);
-		}
-
-		return min(abs((int) $color), 255);
 	}
 
 
@@ -121,6 +82,8 @@ class Paint
 				throw new \InvalidArgumentException('Unsuported file type.');
 				break;
 		}
+
+		$this->applyExifTransformations($this->input);
 	}
 
 
@@ -130,25 +93,15 @@ class Paint
 			throw new \InvalidArgumentException('Output file is not a valid ressource.');
 		}
 
-		if (is_file($output)) {
-			trigger_error('Output file already exists.', E_USER_NOTICE);
-		}
+		// if (is_file($output)) {
+		// 	trigger_error('Output file already exists.', E_USER_NOTICE);
+		// }
 
 		if (!is_writable(dirname($output))) {
 			throw new \InvalidArgumentException('Output file is not writable.');
 		}
 
 		$this->outputPath = $output;
-	}
-
-
-	public function outputFormat($format)
-	{
-		if (false === self::isSupportedFormats($format)) {
-			throw new \InvalidArgumentException('This output format is not supported.');
-		}
-
-		$this->outputFormat = $format;
 	}
 
 
@@ -183,33 +136,13 @@ class Paint
 	}
 
 
-	public function setQuality($quality = 100)
+	public function colorFill(Color $color)
 	{
-		$this->outputQuality = min(100, abs((int) $quality));
+		$this->colorFill = $color;
 	}
 
 
-	public function setForeground($red, $green, $blue)
-	{
-		$this->foreground = array(
-			self::validColor($red),
-			self::validColor($green),
-			self::validColor($blue)
-		);
-	}
-
-
-	public function colorFill($red, $green, $blue)
-	{
-		$this->colorFill = array(
-			self::validColor($red),
-			self::validColor($green),
-			self::validColor($blue)
-		);
-	}
-
-
-	public function generate()
+	public function generate(FormatInterface $format)
 	{
 		// default output size egual input size
 		if (empty($this->outputWidth)) {
@@ -228,8 +161,8 @@ class Paint
 		$this->output = imagecreatetruecolor($this->outputWidth, $this->outputHeight);
 
 		// background color fill
-		if (!empty($this->colorFill)) {
-			imagefill($this->output, 0, 0, imagecolorallocate($this->output, $this->colorFill[0], $this->colorFill[1], $this->colorFill[2]));
+		if (!is_null($this->colorFill)) {
+			imagefill($this->output, 0, 0, $this->colorFill->getColor());
 		}
 
 		// copy input
@@ -253,29 +186,7 @@ class Paint
 		}
 
 		// generate output fill in the right format
-		switch ($this->outputFormat) {
-			case IMG_JPEG:
-				imagejpeg($this->output, $this->outputPath, $this->outputQuality);
-				break;
-			case IMG_PNG:
-				$quality = (1 - ($this->outputQuality / 100)) * 9; // PNG Compression level: from 0 (no compression) to 9.
-				imagepng($this->output, $this->outputPath, $quality, $this->pngFilters);
-				break;
-			case IMG_GIF:
-				imagegif($this->output, $this->outputPath);
-				break;
-			case IMG_WBMP:
-				$foreground = imagecolorallocate($this->output, $this->foreground[0], $this->foreground[1], $this->foreground[2]);
-				imagewbmp($this->output, $this->outputPath, $foreground);
-				break;
-			case IMG_XPM:
-				$foreground = imagecolorallocate($this->output, $this->foreground[0], $this->foreground[1], $this->foreground[2]);
-				imagexbm($this->output, $this->outputPath, $foreground);
-				break;
-			default:
-				throw new \InvalidArgumentException('Unknow output format.');
-				break;
-		}
+		$format->generate($this->output, $this->outputPath);
 	}
 
 
@@ -342,8 +253,83 @@ class Paint
 	}
 
 
+	protected function mirror(&$image)
+	{
+		$width = imagesx($image);
+		$height = imagesy($image);
+
+		$src_x = $width -1;
+		$src_y = 0;
+		$src_width = -$width;
+		$src_height = $heightt;
+
+		$temp = imagecreatetruecolor($width, $height);
+
+		$image = imagecopyresampled($temp, $image, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height);
+
+		imagedestroy($temp);
+	}
+
+
 	public function addFilter(FilterInterface $filter)
 	{
 		$this->filters[] = $filter;
+	}
+
+
+	protected function applyExifTransformations(&$image)
+	{
+		if (!function_exists('exif_read_data')) {
+			return;
+		}
+
+		$exif = exif_read_data($this->inputPath);
+
+		if ($exif && isset($exif['Orientation'])) {
+			switch ($exif['Orientation']) {
+				case 2:
+				$this->mirror();
+				break;
+			case 3:
+				$image = imagerotate($image, 180, 0);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			case 4:
+				$image = imagerotate($image, 180, 0);
+				$this->mirror($image);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			case 5:
+				$image = imagerotate($image, 270, 0);
+				$this->mirror($image);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			case 6:
+				$image = imagerotate($image, 270, 0);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			case 7:
+				$image = imagerotate($image, 90, 0);
+				$this->mirror($image);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			case 8:
+				$image = imagerotate($image, 90, 0);
+				$width = $this->inputWidth;
+				$this->inputWidth = $this->inputHeight;
+				$this->inputHeight = $width;
+				break;
+			}
+		}
 	}
 }

@@ -3,6 +3,8 @@
 namespace Paint\Tests;
 
 use Paint\Paint;
+use Paint\Utils;
+use Paint\Color;
 
 class PaintTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,6 +12,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	{
 		error_reporting(E_ALL);
 		ini_set("display_errors", 1);
+	}
+
+	protected function assertImageColorEquals($img, $red, $green, $blue)
+	{
+		$rgb = imagecolorsforindex($img, imagecolorat($img, 4, 4));
+		$this->assertEquals($red, $rgb['red']);
+		$this->assertEquals($green, $rgb['green']);
+		$this->assertEquals($blue, $rgb['blue']);
 	}
 
 	public function testCreate()
@@ -20,12 +30,19 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testValidColor()
 	{
-		$this->assertEquals(0, Paint::validColor(0));
-		$this->assertEquals(255, Paint::validColor(255));
-		$this->assertEquals(255, Paint::validColor('255'));
-		$this->assertEquals(0, Paint::validColor(0x00));
-		$this->assertEquals(255, Paint::validColor(0xFF));
-		$this->assertEquals(255, Paint::validColor('0xFF'));
+		$this->assertEquals(0, Utils::validColor(0));
+		$this->assertEquals(255, Utils::validColor(255));
+		$this->assertEquals(255, Utils::validColor('255'));
+		$this->assertEquals(0, Utils::validColor(0x00));
+		$this->assertEquals(255, Utils::validColor(0xFF));
+		$this->assertEquals(255, Utils::validColor('0xFF'));
+	}
+
+	public function testColor()
+	{
+		$this->assertEquals(imagecolorallocate(imagecreatetruecolor(1, 1), 255, 127, 0), Color::get(255, 127, 0));
+		$this->assertEquals(imagecolorallocate(imagecreatetruecolor(1, 1), 0x88, 0x00, 0xFF), Color::get(0x88, 0x00, 0xFF));
+		$this->assertEquals(imagecolorallocatealpha(imagecreatetruecolor(1, 1), 255, 127, 0, 127), Color::get(255, 127, 0, 127));
 	}
 
 	public function testInput()
@@ -48,15 +65,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	public function testOutput()
 	{
 		$paint = Paint::create();
-		$paint->output('Tests/carlos-output.jpeg');
-	}
-
-	public function testOutputExists()
-	{
-		$this->setExpectedException('PHPUnit_Framework_Error_Notice');
-
-		$paint = Paint::create();
-		$paint->output('Tests/carlos.jpeg');
+		$paint->output('Tests/generated/carlos-output.jpeg');
 	}
 
 	public function testOutputNotWritable()
@@ -64,43 +73,33 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('InvalidArgumentException');
 
 		$paint = Paint::create();
-		$paint->output('Tests/undefined/carlos.jpeg');
-	}
-
-	public function testSupportedFormat()
-	{
-		$this->assertEquals(true, Paint::isSupportedFormats(IMG_GIF));
-		$this->assertEquals(true, Paint::isSupportedFormats(IMG_JPG));
-		$this->assertEquals(true, Paint::isSupportedFormats(IMG_PNG));
-		$this->assertEquals(true, Paint::isSupportedFormats(IMG_WBMP));
-	}
-
-	public function testUnsupportedFormat()
-	{
-		$paint = Paint::create();
-		$this->assertEquals(false, Paint::isSupportedFormats('unknow'));
+		$paint->output('Tests/generated/undefined/carlos.jpeg');
 	}
 
 	public function testValidOutputFormat()
 	{
 		$paint = Paint::create();
-		$paint->outputFormat(IMG_GIF);
-		$paint->outputFormat(IMG_JPEG);
-		$paint->outputFormat(IMG_PNG);
-		$paint->outputFormat(IMG_WBMP);
+		$paint->setOutputSize(100, 100);
+		
+		ob_start();
+		$paint->generate(new \Paint\Format\JPEG());
+		$paint->generate(new \Paint\Format\GIF());
+		$paint->generate(new \Paint\Format\PNG());
+		$paint->generate(new \Paint\Format\WBMP());
+		ob_end_clean();
 	}
 
 	public function testInvalidOutputFormat()
 	{
-		$this->setExpectedException('InvalidArgumentException');
+		$this->setExpectedException('PHPUnit_Framework_Error');
 
 		$paint = Paint::create();
-		$paint->outputFormat('unknow');
+		$paint->generate('unknow');
 	}
 
-	public function testGenerate()
+	public function testGenerateJPEG()
 	{
-		$file = 'Tests/output.jpeg';
+		$file = 'Tests/generated/output.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -109,14 +108,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$paint = Paint::create();
 		$paint->setOutputSize(100, 100);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\JPEG(60));
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGeneratePNG()
 	{
-		$file = 'Tests/output.png';
+		$file = 'Tests/generated/output.png';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -124,16 +123,15 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 		$paint = Paint::create();
 		$paint->setOutputSize(100, 100);
-		$paint->outputFormat(IMG_PNG);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\PNG(2));
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGenerateGIF()
 	{
-		$file = 'Tests/output.gif';
+		$file = 'Tests/generated/output.gif';
 		
 		if (file_exists($file)) {
 			unlink($file);
@@ -141,16 +139,15 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 		$paint = Paint::create();
 		$paint->setOutputSize(100, 100);
-		$paint->outputFormat(IMG_GIF);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\GIF());
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGenerateWBMP()
 	{
-		$file = 'Tests/output.wbmp';
+		$file = 'Tests/generated/output.wbmp';
 		
 		if (file_exists($file)) {
 			unlink($file);
@@ -158,65 +155,55 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 		$paint = Paint::create();
 		$paint->setOutputSize(100, 100);
-		$paint->outputFormat(IMG_WBMP);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\WBMP());
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
-	public function testColorFill()
-	{
-		$file = 'Tests/output-red.jpeg';
-
-		if (file_exists($file)) {
-			unlink($file);
-		}
-
-		$paint = Paint::create();
-		$paint->setOutputSize(100, 100);
-		$paint->colorFill(255, 0, 0);
-		$paint->output($file);
-		$paint->generate();
-
-		$this->assertEquals(true, file_exists($file));
-
-		$img = imagecreatefromjpeg($file);
-		$rgb = imagecolorsforindex($img, imagecolorat($img, 1, 1));
-		
-		$this->assertEquals(254, $rgb['red']);
-		$this->assertEquals(0, $rgb['green']);
-		$this->assertEquals(0, $rgb['blue']);
-	}
-
-	// public function testWbmpForeground()
+	// TODO : WBMP foreground seem doesn't work...
+	// public function testGenerateWBMPForeground()
 	// {
-	// 	$file = 'Tests/foreground.wbmp';
-
+	// 	$file = 'Tests/output-foreground.wbmp';
+		
 	// 	if (file_exists($file)) {
 	// 		unlink($file);
 	// 	}
 
 	// 	$paint = Paint::create();
 	// 	$paint->setOutputSize(100, 100);
-	// 	$paint->setForeground(255, 0, 0);
-	// 	$paint->outputFormat(IMG_WBMP);
 	// 	$paint->output($file);
-	// 	$paint->generate();
+	// 	$paint->generate(new \Paint\Format\WBMP(new Color(255, 0, 0)));
 
 	// 	$this->assertEquals(true, file_exists($file));
 
 	// 	$img = imagecreatefromwbmp($file);
-	// 	$rgb = imagecolorsforindex($img, imagecolorat($img, 1, 1));
-		
-	// 	$this->assertEquals(255, $rgb['red']);
-	// 	$this->assertEquals(0, $rgb['green']);
-	// 	$this->assertEquals(0, $rgb['blue']);
+	// 	$this->assertImageColorEquals($img, 255, 0, 0);
 	// }
+
+	public function testColorFill()
+	{
+		$file = 'Tests/generated/output-red.jpeg';
+
+		if (file_exists($file)) {
+			unlink($file);
+		}
+
+		$paint = Paint::create();
+		$paint->setOutputSize(100, 100);
+		$paint->colorFill(new Color(255, 0, 0));
+		$paint->output($file);
+		$paint->generate(new \Paint\Format\JPEG());
+
+		$this->assertEquals(true, file_exists($file));
+
+		$img = imagecreatefromjpeg($file);
+		$this->assertImageColorEquals($img, 254, 0, 0);
+	}
 
 	public function testResizeSmaller()
 	{
-		$file = 'Tests/resize-smaller.jpeg';
+		$file = 'Tests/generated/resize-smaller.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -225,16 +212,15 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$paint = Paint::create();
 		$paint->input('Tests/carlos.jpeg');
 		$paint->setOutputSize(300, 300);
-		$paint->outputFormat(IMG_JPEG);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\JPEG());
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testResizeBigger()
 	{
-		$file = 'Tests/resize-bigger.jpeg';
+		$file = 'Tests/generated/resize-bigger.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -243,16 +229,15 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$paint = Paint::create();
 		$paint->input('Tests/carlos.jpeg');
 		$paint->setOutputSize(1024, 768, Paint::RESIZE_FIT);
-		$paint->outputFormat(IMG_JPEG);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\JPEG());
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testCrop()
 	{
-		$file = 'Tests/resize-crop.jpeg';
+		$file = 'Tests/generated/resize-crop.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -261,9 +246,8 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$paint = Paint::create();
 		$paint->input('Tests/carlos.jpeg');
 		$paint->setOutputSize(300, 300, Paint::RESIZE_CROP);
-		$paint->outputFormat(IMG_JPEG);
 		$paint->output($file);
-		$paint->generate();
+		$paint->generate(new \Paint\Format\JPEG());
 
 		$this->assertEquals(true, file_exists($file));
 	}
