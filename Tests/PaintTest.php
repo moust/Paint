@@ -169,6 +169,43 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, file_exists($file));
 	}
 
+	public function testGenerateXBM()
+	{
+		$file = 'tests/generated/output.xbm';
+		
+		if (file_exists($file)) {
+			unlink($file);
+		}
+
+		$paint = Paint::create();
+		$paint->setOutputSize(100, 100);
+		$paint->output($file);
+		$paint->generate(new \Paint\Format\XBM());
+
+		$this->assertEquals(true, file_exists($file));
+	}
+
+	public function testGenerateWebP()
+	{
+		// imagewebp() is only available since PHP 5.5
+		if (!function_exists('imagewebp')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+
+		$file = 'tests/generated/output.webp';
+		
+		if (file_exists($file)) {
+			unlink($file);
+		}
+
+		$paint = Paint::create();
+		$paint->setOutputSize(100, 100);
+		$paint->output($file);
+		$paint->generate(new \Paint\Format\WebP());
+
+		$this->assertEquals(true, file_exists($file));
+	}
+
 	// TODO : WBMP foreground seem doesn't work...
 	// public function testGenerateWBMPForeground()
 	// {
