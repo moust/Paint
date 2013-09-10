@@ -51,7 +51,7 @@ $paint->generate();
 If the output file path is not define, the raw image stream will be outputted directly, else it will be write.
 
 
-Paint\Paint ccan writing a variety of different image formats. To define the desired output format, use `Paint\Paint::generate` method with an instance object which extends `FormatInterface` as extra parameter, like `Paint\Format\JPEG` or `Paint\Format\PNG`.
+`Paint\Paint` can writing a variety of different image formats. To define the desired output format, use `Paint\Paint::generate` method with an instance object which extends `FormatInterface` as extra parameter, like `Paint\Format\JPEG` or `Paint\Format\PNG`.
 
 ```php
 $paint->generate( new Paint\Format\PNG() );
@@ -89,7 +89,7 @@ By default, the image fits to the image's size.
 
 #### Filters
 
-You can apply filters on Paint\Paint with the Paint\Paint::addFilter method.
+You can apply filters on `Paint\Paint` with the `Paint\Paint::addFilter` method.
 
 ```php
 $paint->addFilter( new Paint\Filter\Grayscale() );
@@ -117,7 +117,7 @@ $paint->addFilter( new Paint\Filter\Colorize(255, 0, 0, 75) );
 - SelectiveBlur
 - Smoothness
 
-You can build your own additional filters by creating objects that implements "Paint\Filter\FilterInterface" interface.
+You can build your own additional filters by creating objects that implements `Paint\Filter\FilterInterface` interface.
 
 ## Tests
 
