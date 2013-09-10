@@ -60,26 +60,51 @@ class Paint
 		list($this->inputWidth, $this->inputHeight, $this->inputType) = getimagesize($input);
 
 		switch ($this->inputType) {
+			case IMAGETYPE_GIF:
+				if (!function_exists('imagecreatefromgif')) {
+					throw new CapabilityException('GIF');
+				}
+				$this->input = imagecreatefromgif($input);
+				break;
 			case IMAGETYPE_JPEG:
+				if (!function_exists('imagecreatefromjpeg')) {
+					throw new CapabilityException('JPEG');
+				}
 				$this->input = imagecreatefromjpeg($input);
 				break;
 			case IMAGETYPE_PNG:
+				if (!function_exists('imagecreatefrompng')) {
+					throw new CapabilityException('PNG');
+				}
 				$this->input = imagecreatefrompng($input);
 				break;
-			case IMAGETYPE_GIF:
-				$this->input = imagecreatefromgif($input);
-				break;
 			case IMAGETYPE_WBMP:
+				if (!function_exists('imagecreatefromwbmp')) {
+					throw new CapabilityException('WBMP');
+				}
 				$this->input = imagecreatefromwbmp($input);
 				break;
+			// Not supported yet in PHP 5.5. WebP is supported since in PHP 5.5 (https://bugs.php.net/bug.php?id=65038)
+			case IMAGETYPE_WEBP:
+				if (!function_exists('imagecreatefromwebp')) {
+					throw new CapabilityException('WebP');
+				}
+				$this->input = imagecreatefromwebp($input);
+				break;
 			case IMAGETYPE_XBM:
+				if (!function_exists('imagecreatefromxbm')) {
+					throw new CapabilityException('XBM');
+				}
 				$this->input = imagecreatefromxbm($input);
 				break;
 			case IMAGETYPE_XPM:
+				if (!function_exists('imagecreatefromxpm')) {
+					throw new CapabilityException('XPM');
+				}
 				$this->input = imagecreatefromxpm($input);
 				break;
 			default:
-				throw new \InvalidArgumentException('Unsuported file type.');
+				throw new \InvalidArgumentException('Can\'t read input file type.');
 				break;
 		}
 
