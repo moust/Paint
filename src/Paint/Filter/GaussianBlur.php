@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterGaussianBlur implements FilterInterface
+class GaussianBlur implements FilterInterface
 {
 	public function apply($image)
 	{

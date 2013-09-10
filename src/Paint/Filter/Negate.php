@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterNegate implements FilterInterface
+class Negate implements FilterInterface
 {
 	public function apply($image)
 	{

@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterGrayscale implements FilterInterface
+class Grayscale implements FilterInterface
 {
 	public function apply($image)
 	{

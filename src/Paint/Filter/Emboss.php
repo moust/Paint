@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterEmboss implements FilterInterface
+class Emboss implements FilterInterface
 {
 	public function apply($image)
 	{

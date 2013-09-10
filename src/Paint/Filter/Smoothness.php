@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterSmoothness implements FilterInterface
+class Smoothness implements FilterInterface
 {
 	/**
 	 * Applies a 9-cell convolution matrix where center pixel has the weight arg1 and others weight of 1.0. The result is normalized by dividing the sum with arg1 + 8.0 (sum of the matrix). 

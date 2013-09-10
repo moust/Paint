@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterConvolution implements FilterInterface
+class Convolution implements FilterInterface
 {
 	/**
 	 * @param array $matrix : A 3x3 matrix: an array of three arrays of three floats.

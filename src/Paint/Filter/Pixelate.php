@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterPixelate implements FilterInterface
+class Pixelate implements FilterInterface
 {
 	/**
 	 * @param int $arg1 : Block size in pixels

@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterSelectiveBlur implements FilterInterface
+class SelectiveBlur implements FilterInterface
 {
 	public function apply($image)
 	{

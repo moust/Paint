@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterBrightness implements FilterInterface
+class Brightness implements FilterInterface
 {
 	/**
 	 * @param int $arg1 : Brightness level (-255 = min brightness, 0 = no change, +255 = max brightness)

@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterEdgedetect implements FilterInterface
+class Edgedetect implements FilterInterface
 {
 	public function apply($image)
 	{

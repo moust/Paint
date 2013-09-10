@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterMeanRemoval implements FilterInterface
+class MeanRemoval implements FilterInterface
 {
 	public function apply($image)
 	{

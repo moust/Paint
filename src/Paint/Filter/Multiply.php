@@ -2,7 +2,7 @@
 
 namespace Paint\Filter;
 
-class FilterColorize implements FilterInterface
+class Multiply implements FilterInterface
 {
 	/**
 	 * @param int $red : Value of red component
@@ -17,13 +17,20 @@ class FilterColorize implements FilterInterface
 		$this->green = min(255, abs((int) $green));
 		$this->blue = min(255, abs((int) $blue));
 		$this->alpha = min(127, abs((int) $alpha));
+
+		// get oposite color
+		$this->red = 0 - (255 - $this->red);
+		$this->green = 0 - (255 - $this->green);
+		$this->blue = 0 - (255 - $this->blue);
 	}
-	
+
 	public function apply($image)
 	{
+		// subtract the opposite color from the image
 		if (!imagefilter($image, IMG_FILTER_COLORIZE, $this->red, $this->green, $this->blue, $this->alpha))
 		{
-			throw new FilterException('Fail to apply colorize filter.');
+			throw new FilterException('Fail to apply multiply filter.');
 		}
 	}
 }
+
