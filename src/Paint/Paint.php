@@ -2,9 +2,10 @@
 
 namespace Paint;
 
-use Paint\Utils;
-use Paint\Format\FormatInterface;
+use Paint\Exception\CapabilityException;
 use Paint\Filter\FilterInterface;
+use Paint\Format\FormatInterface;
+use Paint\Utils;
 
 class Paint
 {
@@ -62,49 +63,49 @@ class Paint
 		switch ($this->inputType) {
 			case IMAGETYPE_GIF:
 				if (!function_exists('imagecreatefromgif')) {
-					throw new CapabilityException('GIF');
+					throw new CapabilityException('GIF is not supported.');
 				}
 				$this->input = imagecreatefromgif($input);
 				break;
 			case IMAGETYPE_JPEG:
 				if (!function_exists('imagecreatefromjpeg')) {
-					throw new CapabilityException('JPEG');
+					throw new CapabilityException('JPEG is not supported.');
 				}
 				$this->input = imagecreatefromjpeg($input);
 				break;
 			case IMAGETYPE_PNG:
 				if (!function_exists('imagecreatefrompng')) {
-					throw new CapabilityException('PNG');
+					throw new CapabilityException('PNG is not supported.');
 				}
 				$this->input = imagecreatefrompng($input);
 				break;
 			case IMAGETYPE_WBMP:
 				if (!function_exists('imagecreatefromwbmp')) {
-					throw new CapabilityException('WBMP');
+					throw new CapabilityException('WBMP is not supported.');
 				}
 				$this->input = imagecreatefromwbmp($input);
 				break;
 			// Not supported yet in PHP 5.5. WebP is supported since in PHP 5.5 (https://bugs.php.net/bug.php?id=65038)
-			case IMAGETYPE_WEBP:
-				if (!function_exists('imagecreatefromwebp')) {
-					throw new CapabilityException('WebP');
-				}
-				$this->input = imagecreatefromwebp($input);
-				break;
+			// case IMAGETYPE_WEBP:
+			// 	if (!function_exists('imagecreatefromwebp')) {
+			// 		throw new CapabilityException('WebP is not supported.');
+			// 	}
+			// 	$this->input = imagecreatefromwebp($input);
+			// 	break;
 			case IMAGETYPE_XBM:
 				if (!function_exists('imagecreatefromxbm')) {
-					throw new CapabilityException('XBM');
+					throw new CapabilityException('XBM is not supported.');
 				}
 				$this->input = imagecreatefromxbm($input);
 				break;
-			case IMAGETYPE_XPM:
-				if (!function_exists('imagecreatefromxpm')) {
-					throw new CapabilityException('XPM');
-				}
-				$this->input = imagecreatefromxpm($input);
-				break;
+			// case IMAGETYPE_XPM:
+			// 	if (!function_exists('imagecreatefromxpm')) {
+			// 		throw new CapabilityException('XPM is not supported.');
+			// 	}
+			// 	$this->input = imagecreatefromxpm($input);
+			// 	break;
 			default:
-				throw new \InvalidArgumentException('Can\'t read input file type.');
+				throw new CapabilityException('Unsupported input file type.');
 				break;
 		}
 

@@ -2,7 +2,7 @@
 
 namespace Paint\Exception;
 
-class FilterException extends Exception
+class FilterException extends \Exception
 {
 	
 }

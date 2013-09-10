@@ -2,9 +2,9 @@
 
 namespace Paint\Tests;
 
+use Paint\Color;
 use Paint\Paint;
 use Paint\Utils;
-use Paint\Color;
 
 class PaintTest extends \PHPUnit_Framework_TestCase
 {
@@ -60,6 +60,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 		$paint = Paint::create();
 		$paint->input('tests/');
+	}
+
+	public function testUnsupportedInput()
+	{
+		$this->setExpectedException('Paint\Exception\CapabilityException');
+
+		$paint = Paint::create();
+		$paint->input('tests/unsupported.psd');
 	}
 
 	public function testOutput()
