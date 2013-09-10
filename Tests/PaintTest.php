@@ -48,7 +48,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	public function testInput()
 	{
 		$paint = Paint::create();
-		$paint->input('Tests/carlos.jpeg');
+		$paint->input('tests/carlos.jpeg');
 	}
 
 	public function testInvalidInput()
@@ -56,16 +56,16 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('InvalidArgumentException');
 
 		$paint = Paint::create();
-		$paint->input('Tests/undefined.jpeg');
+		$paint->input('tests/undefined.jpeg');
 
 		$paint = Paint::create();
-		$paint->input('Tests/');
+		$paint->input('tests/');
 	}
 
 	public function testOutput()
 	{
 		$paint = Paint::create();
-		$paint->output('Tests/generated/carlos-output.jpeg');
+		$paint->output('tests/generated/carlos-output.jpeg');
 	}
 
 	public function testOutputNotWritable()
@@ -73,7 +73,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('InvalidArgumentException');
 
 		$paint = Paint::create();
-		$paint->output('Tests/generated/undefined/carlos.jpeg');
+		$paint->output('tests/generated/undefined/carlos.jpeg');
 	}
 
 	public function testValidOutputFormat()
@@ -99,7 +99,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testGenerateJPEG()
 	{
-		$file = 'Tests/generated/output.jpeg';
+		$file = 'tests/generated/output.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -115,7 +115,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testGeneratePNG()
 	{
-		$file = 'Tests/generated/output.png';
+		$file = 'tests/generated/output.png';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -131,7 +131,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testGenerateGIF()
 	{
-		$file = 'Tests/generated/output.gif';
+		$file = 'tests/generated/output.gif';
 		
 		if (file_exists($file)) {
 			unlink($file);
@@ -147,7 +147,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testGenerateWBMP()
 	{
-		$file = 'Tests/generated/output.wbmp';
+		$file = 'tests/generated/output.wbmp';
 		
 		if (file_exists($file)) {
 			unlink($file);
@@ -164,7 +164,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	// TODO : WBMP foreground seem doesn't work...
 	// public function testGenerateWBMPForeground()
 	// {
-	// 	$file = 'Tests/output-foreground.wbmp';
+	// 	$file = 'tests/output-foreground.wbmp';
 		
 	// 	if (file_exists($file)) {
 	// 		unlink($file);
@@ -183,7 +183,7 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testColorFill()
 	{
-		$file = 'Tests/generated/output-red.jpeg';
+		$file = 'tests/generated/output-red.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
@@ -203,14 +203,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testResizeSmaller()
 	{
-		$file = 'Tests/generated/resize-smaller.jpeg';
+		$file = 'tests/generated/resize-smaller.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
 		$paint = Paint::create();
-		$paint->input('Tests/carlos.jpeg');
+		$paint->input('tests/carlos.jpeg');
 		$paint->setOutputSize(300, 300);
 		$paint->output($file);
 		$paint->generate(new \Paint\Format\JPEG());
@@ -220,14 +220,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testResizeBigger()
 	{
-		$file = 'Tests/generated/resize-bigger.jpeg';
+		$file = 'tests/generated/resize-bigger.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
 		$paint = Paint::create();
-		$paint->input('Tests/carlos.jpeg');
+		$paint->input('tests/carlos.jpeg');
 		$paint->setOutputSize(1024, 768, Paint::RESIZE_FIT);
 		$paint->output($file);
 		$paint->generate(new \Paint\Format\JPEG());
@@ -237,14 +237,14 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 
 	public function testCrop()
 	{
-		$file = 'Tests/generated/resize-crop.jpeg';
+		$file = 'tests/generated/resize-crop.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
 		$paint = Paint::create();
-		$paint->input('Tests/carlos.jpeg');
+		$paint->input('tests/carlos.jpeg');
 		$paint->setOutputSize(300, 300, Paint::RESIZE_CROP);
 		$paint->output($file);
 		$paint->generate(new \Paint\Format\JPEG());

@@ -1,4 +1,4 @@
-Compiled source #
+# Compiled source #
 ###################
 *.com
 *.class
@@ -37,4 +37,8 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-generated/*
+# Folders #
+######################
+/vendor
+/composer.lock
+/tests/generated/*

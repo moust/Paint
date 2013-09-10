@@ -2,7 +2,7 @@
     "name": "moust/paint",
     "type": "library",
     "description": "Image manipulation library",
-    "keywords": [],
+    "keywords": ["library", "gd"],
     "license": "MIT",
     "authors": [
         {
@@ -14,10 +14,10 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "~3.7"
     },
     "autoload": {
-        "psr-0": { "Paint\\": "" }
+        "psr-0": { "Paint": "src/" }
     },
     "target-dir": "Paint"
 }
