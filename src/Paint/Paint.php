@@ -114,15 +114,13 @@ class Paint
 
 	public function output($output)
 	{
-		if (!is_string($output)) {
+		// check if output is a valid ressource
+		if (!is_string($output) || file_exists(dirname($output))) {
 			throw new \InvalidArgumentException('Output file is not a valid ressource.');
 		}
 
-		// if (is_file($output)) {
-		// 	trigger_error('Output file already exists.', E_USER_NOTICE);
-		// }
-
-		if (!is_writable(dirname($output))) {
+		// check if output dirname is writable and if it is a file if it is also writable
+		if (!is_writable(dirname($output)) || (file_exists($output) && !is_writable($output))) {
 			throw new \InvalidArgumentException('Output file is not writable.');
 		}
 

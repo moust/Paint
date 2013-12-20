@@ -6,7 +6,7 @@ use Paint\Paint;
 
 class PaintFilterTest extends \PHPUnit_Framework_TestCase
 {
-	public function setUpBeforeClass()
+	public static function setUpBeforeClass()
 	{
 		error_reporting(E_ALL);
 		ini_set("display_errors", 1);
