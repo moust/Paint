@@ -20,7 +20,7 @@ $paint->generate(new Paint\Format\JPEG(60));
 
 This documentation is an introduction to discover the API. It's recommended to browse the source code as it is self-documented.
 
-Paint\Paint is the main object to use to manipulate medias. To build it, use the static `Paint\Paint::create` :
+`Paint\Paint` is the main object to use to manipulate medias. To build it, use the static `Paint\Paint::create` :
 
 ```php
 $paint = Paint\Paint::create();
@@ -58,7 +58,7 @@ If the output file path is not define, the raw image stream will be outputted di
 $paint->generate( new Paint\Format\PNG() );
 ```
 
-Some output format can take optionals parameters like compression level for JPEG or PNG. Browse the source code for more information about it.
+Some output format can take optional parameters like compression level for JPEG or PNG. Browse the source code for more information about it.
 
 ```php
 $paint->generate( new Paint\Format\JPEG(60) );

@@ -2,6 +2,8 @@
 
 namespace Paint\Filter;
 
+use Paint\Exception\FilterException;
+
 class SelectiveBlur implements FilterInterface
 {
 	public function apply($image)

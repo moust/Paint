@@ -5,7 +5,6 @@ namespace Paint;
 use Paint\Exception\CapabilityException;
 use Paint\Filter\FilterInterface;
 use Paint\Format\FormatInterface;
-use Paint\Utils;
 
 class Paint
 {

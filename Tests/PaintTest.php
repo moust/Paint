@@ -8,7 +8,7 @@ use Paint\Utils;
 
 class PaintTest extends \PHPUnit_Framework_TestCase
 {
-	public function setUp()
+	public function setUpBeforeClass()
 	{
 		error_reporting(E_ALL);
 		ini_set("display_errors", 1);

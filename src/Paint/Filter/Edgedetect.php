@@ -2,6 +2,8 @@
 
 namespace Paint\Filter;
 
+use Paint\Exception\FilterException;
+
 class Edgedetect implements FilterInterface
 {
 	public function apply($image)
