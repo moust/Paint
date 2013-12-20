@@ -115,7 +115,7 @@ class Paint
 	public function output($output)
 	{
 		// check if output is a valid ressource
-		if (!is_string($output) || file_exists(dirname($output))) {
+		if (!is_string($output) || !file_exists(dirname($output))) {
 			throw new \InvalidArgumentException('Output file is not a valid ressource.');
 		}
 
