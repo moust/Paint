@@ -12,6 +12,17 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 		ini_set("display_errors", 1);
 	}
 
+	protected function setUp()
+	{
+		if (!file_exists('tests/generated')) {
+			mkdir('tests/generated');
+		}
+
+		if (!file_exists('tests/generated/filter')) {
+			mkdir('tests/generated/filter');
+		}
+	}
+
 	public function testFilterGrayscale()
 	{
 		$file = 'tests/generated/filter/filter-grayscale.jpeg';

@@ -14,6 +14,13 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 		ini_set("display_errors", 1);
 	}
 
+	protected function setUp()
+	{
+		if (!file_exists('tests/generated')) {
+			mkdir('tests/generated');
+		}
+	}
+
 	protected function assertImageColorEquals($img, $red, $green, $blue)
 	{
 		$rgb = imagecolorsforindex($img, imagecolorat($img, 4, 4));
