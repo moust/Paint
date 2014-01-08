@@ -85,24 +85,24 @@ class Paint
 				$this->input = imagecreatefromwbmp($input);
 				break;
 			// Not supported yet in PHP 5.5. WebP is supported since in PHP 5.5 (https://bugs.php.net/bug.php?id=65038)
-			// case IMAGETYPE_WEBP:
-			// 	if (!function_exists('imagecreatefromwebp')) {
-			// 		throw new CapabilityException('WebP is not supported.');
-			// 	}
-			// 	$this->input = imagecreatefromwebp($input);
-			// 	break;
+			case defined('IMAGETYPE_WEBP') && IMAGETYPE_WEBP:
+				if (!function_exists('imagecreatefromwebp')) {
+					throw new CapabilityException('WebP is not supported.');
+				}
+				$this->input = imagecreatefromwebp($input);
+				break;
 			case IMAGETYPE_XBM:
 				if (!function_exists('imagecreatefromxbm')) {
 					throw new CapabilityException('XBM is not supported.');
 				}
 				$this->input = imagecreatefromxbm($input);
 				break;
-			// case IMAGETYPE_XPM:
-			// 	if (!function_exists('imagecreatefromxpm')) {
-			// 		throw new CapabilityException('XPM is not supported.');
-			// 	}
-			// 	$this->input = imagecreatefromxpm($input);
-			// 	break;
+			case defined('IMAGETYPE_WEBP') && IMAGETYPE_XPM:
+				if (!function_exists('imagecreatefromxpm')) {
+					throw new CapabilityException('XPM is not supported.');
+				}
+				$this->input = imagecreatefromxpm($input);
+				break;
 			default:
 				throw new CapabilityException('Unsupported input file type.');
 				break;

@@ -109,6 +109,10 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 
 	public function testGenerateXBM()
 	{
+		if (!function_exists('imagexbm')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+		
 		$file = 'tests/generated/output.xbm';
 		
 		if (file_exists($file)) {

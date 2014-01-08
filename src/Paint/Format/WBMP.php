@@ -22,6 +22,10 @@ class WBMP implements FormatInterface
 
 	public function generate($output, $outputPath = null)
 	{
+		if (!function_exists('imagewbmp')) {
+			throw new CapabilityException('WBMP writing is not supported.');
+		}
+		
 		// FIXME: WBMP foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			imagewbmp($output, $outputPath, $this->foreground->getColor());
