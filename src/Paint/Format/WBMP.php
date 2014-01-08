@@ -22,7 +22,7 @@ class WBMP implements FormatInterface
 
 	public function generate($output, $outputPath = null)
 	{
-		// TODO : WBMP foreground seem doesn't work...
+		// FIXME: WBMP foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			imagewbmp($output, $outputPath, $this->foreground->getColor());
 		}
