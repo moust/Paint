@@ -3,6 +3,7 @@
 namespace Paint\Format;
 
 use Paint\Color;
+use Paint\Format\CapabilityException;
 
 class XBM implements FormatInterface
 {
@@ -26,7 +27,7 @@ class XBM implements FormatInterface
 			throw new CapabilityException('XBM writing is not supported.');
 		}
 
-		// FIXME: XBM foreground seem doesn't work...
+		// XBM foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			$this->imagexbm($output, $outputPath, $this->foreground->getColor());
 		}

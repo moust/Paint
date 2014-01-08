@@ -3,6 +3,7 @@
 namespace Paint\Format;
 
 use Paint\Color;
+use Paint\Format\CapabilityException;
 
 class WBMP implements FormatInterface
 {
@@ -26,7 +27,7 @@ class WBMP implements FormatInterface
 			throw new CapabilityException('WBMP writing is not supported.');
 		}
 		
-		// FIXME: WBMP foreground seem doesn't work...
+		// WBMP foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			imagewbmp($output, $outputPath, $this->foreground->getColor());
 		}
