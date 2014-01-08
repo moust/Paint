@@ -1,6 +1,6 @@
 Paint, a PHP library for image manipulation with GD
 ===================================================
-[![Build Status](https://secure.travis-ci.org/moust/Paint.png?branch=master)](http://travis-ci.org/moust/Paint)
+[![Build Status](https://secure.travis-ci.org/moust/Paint.png?branch=master)](http://travis-ci.org/moust/Paint) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/079bf687-48d4-426a-af3d-3d374525e766/mini.png)](https://insight.sensiolabs.com/projects/079bf687-48d4-426a-af3d-3d374525e766)
 
 Paint is an Object Oriented library to manipulate image files in a variety of different image formats, according to your PHP GD extensions's version and capabilities.
 
