@@ -115,11 +115,16 @@ class Paint
 	public function output($output)
 	{
 		// check if output is a valid ressource
-		if (!is_string($output) || !file_exists(dirname($output))) {
-			throw new \InvalidArgumentException('Output file is not a valid ressource.');
-		}
+        if (!is_string($output)) {
+            throw new \InvalidArgumentException('Output file is not a valid ressource.');
+        }
 
-		// check if output dirname is writable and if it is a file if it is also writable
+        // create output directory if not exists
+        if (!file_exists(dirname($output)) && !mkdir(dirname($output))) {
+            throw new \RuntimeException('Can\'t create output directory.');
+        }
+
+		// check if output dirname is writable, if it is a file and if it is also writable
 		if (!is_writable(dirname($output)) || (file_exists($output) && !is_writable($output))) {
 			throw new \InvalidArgumentException('Output file is not writable.');
 		}
@@ -305,6 +310,11 @@ class Paint
 		if (!function_exists('exif_read_data')) {
 			return;
 		}
+
+        // EXIF is only available on JPEG images
+        if ($this->inputType !== IMAGETYPE_JPEG) {
+            return;
+        }
 
 		$exif = exif_read_data($this->inputPath);
 
