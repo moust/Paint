@@ -87,8 +87,15 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException('InvalidArgumentException');
 
+		$file = 'tests/generated/undefined/exists.jpeg';
+
+		// create an unwritable temp file
+		unlink($file);
+		file_put_contents($file, null);
+		chmod($file, 0400);
+
 		$paint = Paint::create();
-		$paint->output('tests/generated/undefined/carlos.jpeg');
+		$paint->output($file);
 	}
 
 	public function testColorFill()
