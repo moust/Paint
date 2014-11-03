@@ -15,7 +15,7 @@ class Utils
 		if (is_string($color)) {
 			$color = hexdec($color);
 		}
-		
+
 		return min(abs((int) $color), 255);
 	}
 

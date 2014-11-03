@@ -18,7 +18,7 @@ class Convolution implements FilterInterface
 		$this->div = (float) $div;
 		$this->offset = (float) $offset;
 	}
-	
+
 	public function apply($image)
 	{
 		if (!imageconvolution($image, $this->matrix, $this->div, $this->offset))

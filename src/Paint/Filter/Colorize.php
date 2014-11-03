@@ -20,7 +20,7 @@ class Colorize implements FilterInterface
 		$this->blue = min(255, abs((int) $blue));
 		$this->alpha = min(127, abs((int) $alpha));
 	}
-	
+
 	public function apply($image)
 	{
 		if (!imagefilter($image, IMG_FILTER_COLORIZE, $this->red, $this->green, $this->blue, $this->alpha))

@@ -14,7 +14,7 @@ class Brightness implements FilterInterface
 	{
 		$this->arg1 = max(-255, min(255, (int) $arg1));
 	}
-	
+
 	public function apply($image)
 	{
 		if (!imagefilter($image, IMG_FILTER_BRIGHTNESS, $this->arg1))

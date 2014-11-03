@@ -39,7 +39,7 @@ class Color
 		}
 	}
 
-	
+
 	public static function get($red = 0, $green = 0, $blue = 0, $alpha = 0)
 	{
 		$color = new self($red, $green, $blue, $alpha);

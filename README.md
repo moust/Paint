@@ -36,7 +36,7 @@ $paint->input('source.jpeg');
 
 Images's types that can be opened are GIF, JPEG, PNG, WBMP and XBM.
 
-To define an output file path, use the `Paint\Paint::output` method.  
+To define an output file path, use the `Paint\Paint::output` method.
 
 ```php
 $paint->output('destination.jpeg');
@@ -80,7 +80,7 @@ To define size of the output image, use the `Paint\Paint::setOutputSize` method.
 $paint->setOutputSize(960, 480);
 ```
 
-It's possible to pass an optional third parameter to define if the image must be crop or must fit the image size. This parameter must be `Paint::RESIZE_CROP` or `Paint::RESIZE_FIT`. 
+It's possible to pass an optional third parameter to define if the image must be crop or must fit the image size. This parameter must be `Paint::RESIZE_CROP` or `Paint::RESIZE_FIT`.
 
 ```php
 $paint->setOutputSize(960, 480, Paint::RESIZE_CROP);

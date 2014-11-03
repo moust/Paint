@@ -52,6 +52,6 @@ class XBM implements FormatInterface
 		}
 		else {
 			imagexbm($output, $outputPath, $foreground);
-		} 
+		}
 	}
 }

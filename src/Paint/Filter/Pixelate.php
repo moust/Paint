@@ -16,7 +16,7 @@ class Pixelate implements FilterInterface
 		$this->arg1 = (int) $arg1;
 		$this->arg2 = (bool) $arg2;
 	}
-	
+
 	public function apply($image)
 	{
 		if (!imagefilter($image, IMG_FILTER_PIXELATE, $this->arg1, $this->arg2))

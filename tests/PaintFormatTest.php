@@ -25,7 +25,7 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 	public function testGenerateGIF()
 	{
 		$file = 'tests/generated/output.gif';
-		
+
 		if (file_exists($file)) {
 			unlink($file);
 		}
@@ -73,7 +73,7 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 	public function testGenerateWBMP()
 	{
 		$file = 'tests/generated/output.wbmp';
-		
+
 		if (file_exists($file)) {
 			unlink($file);
 		}
@@ -94,7 +94,7 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 		}
 
 		$file = 'tests/generated/output.webp';
-		
+
 		if (file_exists($file)) {
 			unlink($file);
 		}
@@ -112,9 +112,9 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 		if (!function_exists('imagexbm')) {
 			$this->setExpectedException('Paint\Exception\CapabilityException');
 		}
-		
+
 		$file = 'tests/generated/output.xbm';
-		
+
 		if (file_exists($file)) {
 			unlink($file);
 		}
