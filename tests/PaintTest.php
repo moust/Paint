@@ -87,10 +87,21 @@ class PaintTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException('InvalidArgumentException');
 
+		// test invalid path
+
 		$file = 'tests/generated/undefined/exists.jpeg';
 
+		$paint = Paint::create();
+		$paint->output($file);
+
+		// test unwritable file
+
+		$file = 'tests/generated/exists.jpeg';
+
 		// create an unwritable temp file
-		unlink($file);
+		if (file_exists($file)) {
+			unlink($file);
+		}
 		file_put_contents($file, null);
 		chmod($file, 0400);
 
