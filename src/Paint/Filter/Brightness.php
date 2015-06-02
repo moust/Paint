@@ -7,7 +7,7 @@ use Paint\Exception\FilterException;
 class Brightness implements FilterInterface
 {
 	/**
-	 * @param int $arg1 : Brightness level (-255 = min brightness, 0 = no change, +255 = max brightness)
+	 * @param int $arg1 Brightness level (-255 = min brightness, 0 = no change, +255 = max brightness)
 	 * @return void
 	 **/
 	public function __construct($arg1)

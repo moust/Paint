@@ -7,7 +7,7 @@ use Paint\Exception\FilterException;
 class Contrast implements FilterInterface
 {
 	/**
-	 * @param int $arg1 : Contrast level (-100 = max contrast, 0 = no change, +100 = min contrast)
+	 * @param int $arg1 Contrast level (-100 = max contrast, 0 = no change, +100 = min contrast)
 	 * @return void
 	 **/
 	public function __construct($arg1)

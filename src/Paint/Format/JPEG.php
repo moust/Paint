@@ -16,6 +16,9 @@ class JPEG implements FormatInterface
 		$this->quality = min(100, abs((int) $quality));
 	}
 
+	/**
+     * {@inheritdoc}
+     */
 	public function generate($output, $outputPath = null)
 	{
 		imagejpeg($output, $outputPath, $this->quality);

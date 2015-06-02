@@ -7,8 +7,8 @@ use Paint\Exception\FilterException;
 class Pixelate implements FilterInterface
 {
 	/**
-	 * @param int $arg1 : Block size in pixels
-	 * @param bool $arg2 : Whether to use advanced pixelation effect or not (defaults to FALSE)
+	 * @param int $arg1 Block size in pixels
+	 * @param bool $arg2 Whether to use advanced pixelation effect or not (defaults to FALSE)
 	 * @return void
 	 **/
 	public function __construct($arg1, $arg2)

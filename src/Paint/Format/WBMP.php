@@ -21,6 +21,9 @@ class WBMP implements FormatInterface
 		}
 	}
 
+	/**
+     * {@inheritdoc}
+     */
 	public function generate($output, $outputPath = null)
 	{
 		if (!function_exists('imagewbmp')) {

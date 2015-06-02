@@ -20,6 +20,9 @@ class PNG implements FormatInterface
 		$this->filters = $filters;
 	}
 
+	/**
+     * {@inheritdoc}
+     */
 	public function generate($output, $outputPath = null)
 	{
 		imagepng($output, $outputPath, $this->quality, $this->filters);

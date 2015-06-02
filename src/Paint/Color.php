@@ -39,7 +39,15 @@ class Color
 		}
 	}
 
-
+	/**
+	 * Initilize a color for an image
+	 *
+	 * @param int $red   Integers between 0 and 255 or hexadecimals between 0x00 and 0xFF
+	 * @param int $green Integers between 0 and 255 or hexadecimals between 0x00 and 0xFF
+	 * @param int $blue  Integers between 0 and 255 or hexadecimals between 0x00 and 0xFF
+	 * @param int $alpha integer between 0 and 127. 0 indicates completely opaque while 127 indicates completely transparent.
+	 * @return int Color identifier representing the color composed of the given RGB components.
+	 **/
 	public static function get($red = 0, $green = 0, $blue = 0, $alpha = 0)
 	{
 		$color = new self($red, $green, $blue, $alpha);
@@ -47,6 +55,11 @@ class Color
 		return $color->getColor();
 	}
 
+	/**
+	 * Get the color ressource
+	 *
+	 * @return int Color identifier representing the color composed of the given RGB components.
+	 **/
 	public function getColor()
 	{
 		return $this->color;
