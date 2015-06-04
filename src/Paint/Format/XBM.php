@@ -7,54 +7,54 @@ use Paint\Exception\CapabilityException;
 
 class XBM implements FormatInterface
 {
-	public $foreground;
+    public $foreground;
 
-	/**
-	 * Constructor
-	 *
-	 * @param int $red JPEG Compression level: from 0 to 100 (no compression).
-	 **/
-	public function __construct(Color $foreground = null)
-	{
-		if (!function_exists('imagexbm')) {
-			throw new CapabilityException('XBM writing is not supported.');
-		}
+    /**
+     * Constructor
+     *
+     * @param int $red JPEG Compression level: from 0 to 100 (no compression).
+     **/
+    public function __construct(Color $foreground = null)
+    {
+        if (!function_exists('imagexbm')) {
+            throw new CapabilityException('XBM writing is not supported.');
+        }
 
-		if (!is_null($foreground)) {
-			$this->foreground = $foreground;
-		}
-	}
+        if (!is_null($foreground)) {
+            $this->foreground = $foreground;
+        }
+    }
 
-	/**
+    /**
      * {@inheritdoc}
      */
-	public function generate($output, $outputPath = null)
-	{
-		// XBM foreground seem doesn't work...
-		if (!is_null($this->foreground)) {
-			$this->imagexbm($output, $outputPath, $this->foreground->getColor());
-		}
-		else {
-			$this->imagexbm($output, $outputPath);
-		}
-	}
+    public function generate($output, $outputPath = null)
+    {
+        // XBM foreground seem doesn't work...
+        if (!is_null($this->foreground)) {
+            $this->imagexbm($output, $outputPath, $this->foreground->getColor());
+        }
+        else {
+            $this->imagexbm($output, $outputPath);
+        }
+    }
 
-	/**
-	 * Fix imagexbm bug where the output stream is still sent to stdout (https://bugs.php.net/bug.php?id=66339)
-	 *
-	 * @return void
-	 **/
-	protected function imagexbm($output, $outputPath = null, $foreground = null)
-	{
-		if ($outputPath) {
-			ob_start();
-			imagexbm($output, $outputPath, $foreground);
-			$data = ob_get_contents();
-			ob_end_clean();
-			file_put_contents($outputPath, $data, LOCK_EX);
-		}
-		else {
-			imagexbm($output, $outputPath, $foreground);
-		}
-	}
+    /**
+     * Fix imagexbm bug where the output stream is still sent to stdout (https://bugs.php.net/bug.php?id=66339)
+     *
+     * @return void
+     **/
+    protected function imagexbm($output, $outputPath = null, $foreground = null)
+    {
+        if ($outputPath) {
+            ob_start();
+            imagexbm($output, $outputPath, $foreground);
+            $data = ob_get_contents();
+            ob_end_clean();
+            file_put_contents($outputPath, $data, LOCK_EX);
+        }
+        else {
+            imagexbm($output, $outputPath, $foreground);
+        }
+    }
 }

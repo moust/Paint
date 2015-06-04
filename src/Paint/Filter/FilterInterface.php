@@ -4,5 +4,5 @@ namespace Paint\Filter;
 
 interface FilterInterface
 {
-	public function apply($image);
+    public function apply($image);
 }
