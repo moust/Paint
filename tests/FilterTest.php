@@ -2,9 +2,11 @@
 
 namespace Paint\Tests;
 
-use Paint\Paint;
+use Paint\Image;
+use Paint\Filter;
+use Paint\Format;
 
-class PaintFilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends \PHPUnit_Framework_TestCase
 {
 	public static function setUpBeforeClass()
 	{
@@ -31,11 +33,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Grayscale() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Grayscale() );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -48,11 +48,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Negate() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter(new Filter\Negate());
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -65,11 +63,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Edgedetect() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Edgedetect() );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -82,11 +78,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\GaussianBlur() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\GaussianBlur() );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -99,11 +93,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\MeanRemoval() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\MeanRemoval() );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -116,11 +108,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Emboss() );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Emboss() );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -133,11 +123,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Brightness(127) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Brightness(127) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -150,11 +138,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Contrast(-100) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Contrast(-100) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -167,11 +153,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Smoothness(-8) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Smoothness(-8) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -184,11 +168,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Pixelate(5, true) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Pixelate(5, true) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -201,11 +183,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Colorize(255, 0, 0, 0) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Colorize(255, 0, 0, 0) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -218,11 +198,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Multiply(0, 255, 0, 0) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Multiply(0, 255, 0, 0) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -237,11 +215,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 
 		$matrix = array(array(2, 0, 0), array(0, -1, 0), array(0, 0, -1));
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Convolution($matrix, 1, 127) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Convolution($matrix, 1, 127) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -256,11 +232,9 @@ class PaintFilterTest extends \PHPUnit_Framework_TestCase
 
 		$matrix = array(array(1.0, 2.0, 1.0), array(2.0, 4.0, 2.0), array(1.0, 2.0, 1.0));
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->addFilter( new \Paint\Filter\Convolution($matrix, 16, 0) );
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG());
+		$image = new Image('tests/carlos.jpeg');
+		$image->addFilter( new Filter\Convolution($matrix, 16, 0) );
+		$image->generate(new Format\JPEG(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}

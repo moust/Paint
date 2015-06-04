@@ -3,10 +3,11 @@
 namespace Paint\Tests;
 
 use Paint\Color;
-use Paint\Paint;
+use Paint\Image;
+use Paint\Format;
 use Paint\Utils;
 
-class PaintFormatTest extends \PHPUnit_Framework_TestCase
+class FormatTest extends \PHPUnit_Framework_TestCase
 {
 	public static function setUpBeforeClass()
 	{
@@ -18,70 +19,78 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException('PHPUnit_Framework_Error');
 
-		$paint = Paint::create();
-		$paint->generate('unknow');
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate('unknow');
 	}
 
 	public function testGenerateGIF()
 	{
+		if (!function_exists('imagegif')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+
 		$file = 'tests/generated/output.gif';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\GIF());
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\GIF(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGenerateJPEG()
 	{
+		if (!function_exists('imagejpeg')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+
 		$file = 'tests/generated/output.jpeg';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\JPEG(60));
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\JPEG(60), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGeneratePNG()
 	{
+		if (!function_exists('imagepng')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+
 		$file = 'tests/generated/output.png';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\PNG(2));
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\PNG(2), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
 
 	public function testGenerateWBMP()
 	{
+		if (!function_exists('imagewbmp')) {
+			$this->setExpectedException('Paint\Exception\CapabilityException');
+		}
+
 		$file = 'tests/generated/output.wbmp';
 
 		if (file_exists($file)) {
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\WBMP());
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\WBMP(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -99,10 +108,8 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\WebP());
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\WebP(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}
@@ -119,10 +126,8 @@ class PaintFormatTest extends \PHPUnit_Framework_TestCase
 			unlink($file);
 		}
 
-		$paint = Paint::create();
-		$paint->input('tests/carlos.jpeg');
-		$paint->output($file);
-		$paint->generate(new \Paint\Format\XBM());
+		$image = new Image('tests/carlos.jpeg');
+		$image->generate(new Format\XBM(), $file);
 
 		$this->assertEquals(true, file_exists($file));
 	}

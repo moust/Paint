@@ -2,6 +2,8 @@
 
 namespace Paint\Format;
 
+use Paint\Exception\CapabilityException;
+
 class PNG implements FormatInterface
 {
 	public $quality = 0;
@@ -16,6 +18,10 @@ class PNG implements FormatInterface
 	 **/
 	public function __construct($quality = 0, $filters = null)
 	{
+		if (!function_exists('imagepng')) {
+			throw new CapabilityException('PNG is not supported.');
+		}
+		
 		$this->quality = min(9, abs((int) $quality));
 		$this->filters = $filters;
 	}

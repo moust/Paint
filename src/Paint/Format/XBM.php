@@ -3,7 +3,7 @@
 namespace Paint\Format;
 
 use Paint\Color;
-use Paint\Format\CapabilityException;
+use Paint\Exception\CapabilityException;
 
 class XBM implements FormatInterface
 {
@@ -16,6 +16,10 @@ class XBM implements FormatInterface
 	 **/
 	public function __construct(Color $foreground = null)
 	{
+		if (!function_exists('imagexbm')) {
+			throw new CapabilityException('XBM writing is not supported.');
+		}
+
 		if (!is_null($foreground)) {
 			$this->foreground = $foreground;
 		}
@@ -26,10 +30,6 @@ class XBM implements FormatInterface
      */
 	public function generate($output, $outputPath = null)
 	{
-		if (!function_exists('imagexbm')) {
-			throw new CapabilityException('XBM writing is not supported.');
-		}
-
 		// XBM foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			$this->imagexbm($output, $outputPath, $this->foreground->getColor());

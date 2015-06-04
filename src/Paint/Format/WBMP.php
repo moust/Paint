@@ -3,7 +3,7 @@
 namespace Paint\Format;
 
 use Paint\Color;
-use Paint\Format\CapabilityException;
+use Paint\Exception\CapabilityException;
 
 class WBMP implements FormatInterface
 {
@@ -16,6 +16,10 @@ class WBMP implements FormatInterface
 	 **/
 	public function __construct(Color $foreground = null)
 	{
+		if (!function_exists('imagewbmp')) {
+			throw new CapabilityException('WBMP writing is not supported.');
+		}
+
 		if (!is_null($foreground)) {
 			$this->foreground = $foreground;
 		}
@@ -26,10 +30,6 @@ class WBMP implements FormatInterface
      */
 	public function generate($output, $outputPath = null)
 	{
-		if (!function_exists('imagewbmp')) {
-			throw new CapabilityException('WBMP writing is not supported.');
-		}
-
 		// WBMP foreground seem doesn't work...
 		if (!is_null($this->foreground)) {
 			imagewbmp($output, $outputPath, $this->foreground->getColor());

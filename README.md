@@ -8,60 +8,44 @@ Paint is an Object Oriented library to manipulate image files in a variety of di
 
 ```php
 <?php
-$paint = Paint\Paint::create();
-$paint->input('source.jpeg');
-$paint->output('destination.jpeg');
-$paint->setOutputSize(960, 480);
-$paint->addFilter( new Paint\Filter\Grayscale() );
-$paint->generate(new Paint\Format\JPEG(60));
+$image = new Pain\Image('source.jpeg');
+$image->addTransformation( new Transformation\Resize(300, 200) );
+$image->addFilter( new Paint\Filter\Grayscale() );
+$image->generate( new Paint\Format\JPEG(60), 'destination.jpeg' );
 ```
 
 ## Documentation
 
 This documentation is an introduction to discover the API. It's recommended to browse the source code as it is self-documented.
 
-`Paint\Paint` is the main object to use to manipulate medias. To build it, use the static `Paint\Paint::create` :
+`Paint\Image` is the main object to use to manipulate images :
 
 ```php
-$paint = Paint\Paint::create();
+$image = new Pain\Image('source.jpeg');
 ```
 
 ### Manipulate image
 
-Paint\Paint creates ressource based on file paths. To open a file path, use the `Paint\Paint::input` method.
-
-```php
-$paint->input('source.jpeg');
-```
-
 Images's types that can be opened are GIF, JPEG, PNG, WBMP and XBM.
 
-To define an output file path, use the `Paint\Paint::output` method.
+To generate the output image, use the `Paint\Image::generate` method.
 
 ```php
-$paint->output('destination.jpeg');
+$image->generate();
 ```
 
-
-To generate the output image, use the `Paint\Paint::generate` method.
+`Paint\Image` can writing a variety of different image formats. To define the desired output format, use `Paint\Image::generate` method with an instance object which extends `FormatInterface` as extra parameter, like `Paint\Format\JPEG` or `Paint\Format\PNG`.
 
 ```php
-$paint->generate();
+$image->generate( new Paint\Format\PNG(), 'destination.png' );
 ```
 
 If the output file path is not define, the raw image stream will be outputted directly, else it will be write.
 
-
-`Paint\Paint` can writing a variety of different image formats. To define the desired output format, use `Paint\Paint::generate` method with an instance object which extends `FormatInterface` as extra parameter, like `Paint\Format\JPEG` or `Paint\Format\PNG`.
-
-```php
-$paint->generate( new Paint\Format\PNG() );
-```
-
 Some output format can take optional parameters like compression level for JPEG or PNG. Browse the source code for more information about it.
 
 ```php
-$paint->generate( new Paint\Format\JPEG(60) );
+$image->generate( new Paint\Format\JPEG(60) );
 ```
 
 *Writing formats supported are :*
@@ -72,34 +56,50 @@ $paint->generate( new Paint\Format\JPEG(60) );
 - WebP (only supported since PHP 5.5 version)
 - XBM
 
-#### Resize
+### Transformations
 
-To define size of the output image, use the `Paint\Paint::setOutputSize` method. The parameters respectively corresponds to width and height of the image.
+Image can be resize or crop by adding transformation object.
 
 ```php
-$paint->setOutputSize(960, 480);
+$image->addTransformation( new Paint\Transformation\Resize(960, 480) );
+```
+
+```php
+$image->addTransformation( new Paint\Transformation\Crop(500, 500) );
+```
+
+*Transformations supported are :*
+- Resize
+- Crop
+- Mirror
+- Rotate
+
+It exists a shortcut function to resize or crop an image. The parameters respectively corresponds to width and height of the image. :
+
+```php
+$image->setOutputSize(960, 480);
 ```
 
 It's possible to pass an optional third parameter to define if the image must be crop or must fit the image size. This parameter must be `Paint::RESIZE_CROP` or `Paint::RESIZE_FIT`.
 
 ```php
-$paint->setOutputSize(960, 480, Paint::RESIZE_CROP);
+$image->setOutputSize(960, 480, Paint::RESIZE_CROP);
 ```
 
 By default, the image fits to the image's size.
 
 #### Filters
 
-You can apply filters on `Paint\Paint` with the `Paint\Paint::addFilter` method.
+You can apply filters on `Paint\Image` with the `Paint\Image::addFilter` method.
 
 ```php
-$paint->addFilter( new Paint\Filter\Grayscale() );
+$image->addFilter( new Paint\Filter\Grayscale() );
 ```
 
 Some filters take optionals parameters like `Paint\Filter\Colorize` which needs color's values. Browse the source code for more information about it.
 
 ```php
-$paint->addFilter( new Paint\Filter\Colorize(255, 0, 0, 75) );
+$image->addFilter( new Paint\Filter\Colorize(255, 0, 0, 75) );
 ```
 
 *Filter availables :*
